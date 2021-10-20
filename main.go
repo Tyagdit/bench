@@ -7,16 +7,17 @@ import (
     "github.com/tyagdit/toolie/widgets"
     // "github.com/tyagdit/toolie/tools"
 
+    "github.com/atotto/clipboard"
+
     "github.com/gcla/gowid"
     "github.com/gcla/gowid/examples"
-    "github.com/gcla/gowid/widgets/pile"
-    "github.com/gcla/gowid/widgets/framed"
-    "github.com/gcla/gowid/widgets/text"
-    "github.com/gcla/gowid/widgets/columns"
-    "github.com/gcla/gowid/widgets/list"
     "github.com/gcla/gowid/widgets/button"
-
-    "github.com/sirupsen/logrus"
+    "github.com/gcla/gowid/widgets/columns"
+    "github.com/gcla/gowid/widgets/framed"
+    "github.com/gcla/gowid/widgets/list"
+    "github.com/gcla/gowid/widgets/overlay"
+    "github.com/gcla/gowid/widgets/pile"
+    "github.com/gcla/gowid/widgets/text"
 )
 
 
@@ -38,10 +39,35 @@ func main() {
         },
     )
 
+    copyButton := button.NewDecorated(
+        text.New(
+            " Copy Output ",
+            text.Options{Align: gowid.HAlignMiddle{}},
+        ),
+        button.Decoration{Left: "", Right: ""},
+    )
+    copyButton.OnClick(gowid.WidgetCallback{
+        Name: "cb",
+        WidgetChangedFunction: func(app gowid.IApp, w gowid.IWidget) {
+            clipboard.WriteAll(state.Output.Content().String())
+        },
+    })
+
+    overlayedFramedOutput := overlay.New(
+        copyButton, framedOutput,
+        gowid.VAlignTop{}, gowid.RenderWithUnits{U: 1},
+        gowid.HAlignRight{}, gowid.RenderWithUnits{U: 17},
+    )
+
     ioPile := pile.New([]gowid.IContainerWidget{
         &gowid.ContainerWidget{IWidget: framedInput, D: gowid.RenderWithRatio{R: 0.5}},
-        &gowid.ContainerWidget{IWidget: framedOutput, D: gowid.RenderWithRatio{R: 0.49}},
+        &gowid.ContainerWidget{IWidget: overlayedFramedOutput, D: gowid.RenderWithRatio{R: 0.49}},
     })
+
+    // To sort by the order in slice
+    for i, tool := range widgets.ToolSlice1 {
+        widgets.ToolMap[tool] = widgets.ToolSlice2[i]
+    }
 
     state.Input.OnTextSet(gowid.WidgetCallback{
         Name: "cb",
@@ -54,15 +80,15 @@ func main() {
         },
     })
 
-    var ToolButtonList = make([]gowid.IWidget, state.ToolButtonCount)
-    for _, v := range widgets.ToolMap {
+    var ToolButtonList = make([]gowid.IWidget, len(widgets.ToolSlice1))
+    for _, v := range widgets.ToolSlice1 {
         btn := button.NewDecorated(
-            text.New(v.Label),
+            text.New(widgets.ToolMap[v].Label),
             button.Decoration{Left: "", Right: ""},
         )
         btn.OnClick(gowid.WidgetCallback{
             Name: "cb",
-            WidgetChangedFunction: v.Callback,
+            WidgetChangedFunction: widgets.ToolMap[v].Callback,
         })
 
         ToolButtonList = append(ToolButtonList, btn)
@@ -90,7 +116,6 @@ func main() {
     app, err := gowid.NewApp(gowid.AppArgs{
         View:    cols,
         Palette: &palette,
-        Log: logrus.StandardLogger(),
     })
     examples.ExitOnErr(err)
 

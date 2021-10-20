@@ -14,18 +14,34 @@ type Tool struct {
     Callback func(app gowid.IApp, w gowid.IWidget)
 }
 
-
-var ToolMap = map[string]Tool {
-    "to_b64": {"To Base64", tools.ToBase64CallBack},
-    "from_b64": {"From Base64", tools.FromBase64CallBack},
-    "to_hex": {"To Hex", tools.ToHexCallback},
-    "from_hex": {"To Hex", tools.FromHexCallback},
-    "sha1": {"SHA-1", tools.SHA1Callback},
-    "sha256": {"SHA-256", tools.SHA256Callback},
-    "sha512": {"SHA-512", tools.SHA512Callback},
-    "md5": {"MD5", tools.MD5Callback},
-    "url_en": {"Encode URL", tools.URLEncodeCallback},
-    "uel_de": {"Decode URL", tools.URLDecodeCallback},
-    "pretty_json": {"Beautify JSON", tools.JSONBeautifyCallback},
-    "mini_json": {"Minify JSON", tools.JSONMinifyCallback},
+var ToolSlice1 = []string {
+    "to_b64",
+    "from_b64",
+    "to_hex",
+    "from_hex",
+    "sha1",
+    "sha256",
+    "sha512",
+    "md5",
+    "url_en",
+    "url_de",
+    "pretty_json",
+    "mini_json",
 }
+
+var ToolSlice2 = []Tool {
+    {"To Base64", tools.ToBase64CallBack},
+    {"From Base64", tools.FromBase64CallBack},
+    {"To Hex", tools.ToHexCallback},
+    {"From Hex", tools.FromHexCallback},
+    {"SHA-1", tools.SHA1Callback},
+    {"SHA-256", tools.SHA256Callback},
+    {"SHA-512", tools.SHA512Callback},
+    {"MD5", tools.MD5Callback},
+    {"Encode URL", tools.URLEncodeCallback},
+    {"Decode URL", tools.URLDecodeCallback},
+    {"Beautify JSON", tools.JSONBeautifyCallback},
+    {"Minify JSON", tools.JSONMinifyCallback},
+}
+
+var ToolMap = make(map[string]Tool, len(ToolSlice1))
