@@ -18,15 +18,21 @@ import (
     "github.com/gcla/gowid/widgets/overlay"
     "github.com/gcla/gowid/widgets/pile"
     "github.com/gcla/gowid/widgets/text"
+    "github.com/sirupsen/logrus"
 )
 
 
 func main() {
 
+    asciiFrameAlt := framed.FrameRunes{
+        '┌', '┐', '└', '┘',
+        '─', '─', '│', '│',
+    }
+
     framedInput := framed.New(
         state.Input,
         framed.Options{
-            Frame: framed.UnicodeFrame,
+            Frame: asciiFrameAlt,
             Title: "Input",
         },
     )
@@ -34,17 +40,17 @@ func main() {
     framedOutput := framed.New(
         state.Output, 
         framed.Options{
-            Frame: framed.UnicodeFrame,
+            Frame: asciiFrameAlt,
             Title: "Output",
         },
     )
 
     copyButton := button.NewDecorated(
         text.New(
-            " Copy Output ",
+            "Copy Output",
             text.Options{Align: gowid.HAlignMiddle{}},
         ),
-        button.Decoration{Left: "", Right: ""},
+        button.Decoration{Left: "[", Right: "]"},
     )
     copyButton.OnClick(gowid.WidgetCallback{
         Name: "cb",
@@ -56,7 +62,7 @@ func main() {
     overlayedFramedOutput := overlay.New(
         copyButton, framedOutput,
         gowid.VAlignTop{}, gowid.RenderWithUnits{U: 1},
-        gowid.HAlignRight{}, gowid.RenderWithUnits{U: 17},
+        gowid.HAlignRight{}, gowid.RenderWithUnits{U: 13},
     )
 
     ioPile := pile.New([]gowid.IContainerWidget{
@@ -97,7 +103,7 @@ func main() {
     framedOpsList := framed.New(
         opsList,
         framed.Options{
-            Frame: framed.UnicodeFrame,
+            Frame: asciiFrameAlt,
             Title: "Operations",
         },
     )
@@ -106,6 +112,9 @@ func main() {
         &gowid.ContainerWidget{IWidget: framedOpsList, D: gowid.RenderWithRatio{R: 0.2}},
         &gowid.ContainerWidget{IWidget: ioPile, D: gowid.RenderWithRatio{R: 0.8}},
     })
+
+    f := examples.RedirectLogger("toolie.log")
+    defer f.Close()
 
     palette := gowid.Palette{
         "body":  gowid.MakePaletteEntry(gowid.ColorBlack, gowid.ColorCyan),
@@ -116,6 +125,7 @@ func main() {
     app, err := gowid.NewApp(gowid.AppArgs{
         View:    cols,
         Palette: &palette,
+        Log: logrus.StandardLogger(),
     })
     examples.ExitOnErr(err)
 
