@@ -29,6 +29,7 @@ var ToolSlice1 = []string {
     "url_de",
     "pretty_json",
     "mini_json",
+    "csv_2_json",
 }
 
 var ToolSlice2 = []Tool {
@@ -46,6 +47,7 @@ var ToolSlice2 = []Tool {
     {"Decode URL", tools.URLDecodeCallback},
     {"Beautify JSON", tools.JSONBeautifyCallback},
     {"Minify JSON", tools.JSONMinifyCallback},
+    {"CSV To JSON", tools.CSVToJSON},
 }
 
 var ToolMap = make(map[string]Tool, len(ToolSlice1))

@@ -25,8 +25,8 @@ import (
 func main() {
 
     asciiFrameAlt := framed.FrameRunes{
-        '┌', '┐', '└', '┘',
-        '─', '─', '│', '│',
+        Tl:'┌', Tr:'┐', Bl:'└', Br:'┘',
+        T:'─', B:'─', L:'│', R:'│',
     }
 
     framedInput := framed.New(
