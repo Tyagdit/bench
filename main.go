@@ -3,9 +3,9 @@ package main
 import (
     // "fmt"
 
-    "github.com/tyagdit/toolie/state"
-    "github.com/tyagdit/toolie/widgets"
-    // "github.com/tyagdit/toolie/tools"
+    "github.com/tyagdit/bench/state"
+    "github.com/tyagdit/bench/widgets"
+    // "github.com/tyagdit/bench/tools"
 
     "github.com/atotto/clipboard"
 
@@ -113,7 +113,7 @@ func main() {
         &gowid.ContainerWidget{IWidget: ioPile, D: gowid.RenderWithRatio{R: 0.8}},
     })
 
-    f := examples.RedirectLogger("toolie.log")
+    f := examples.RedirectLogger("bench.log")
     defer f.Close()
 
     palette := gowid.Palette{

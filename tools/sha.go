@@ -7,7 +7,7 @@ import (
     "crypto/sha256"
     "crypto/sha512"
 
-    "github.com/tyagdit/toolie/state"
+    "github.com/tyagdit/bench/state"
     "github.com/gcla/gowid"
 )
 

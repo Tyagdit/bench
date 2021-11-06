@@ -2,7 +2,7 @@ package tools
 
 import (
     "encoding/hex"
-    "github.com/tyagdit/toolie/state"
+    "github.com/tyagdit/bench/state"
     "github.com/gcla/gowid"
 )
 

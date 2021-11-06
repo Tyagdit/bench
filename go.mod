@@ -1,4 +1,4 @@
-module github.com/tyagdit/toolie
+module github.com/tyagdit/bench
 
 go 1.15
 

@@ -1,8 +1,8 @@
 package widgets
 
 import (
-    // "github.com/tyagdit/toolie/state"
-    "github.com/tyagdit/toolie/tools"
+    // "github.com/tyagdit/bench/state"
+    "github.com/tyagdit/bench/tools"
 
     "github.com/gcla/gowid"
     // "github.com/gcla/gowid/widgets/button"
